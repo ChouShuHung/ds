@@ -1,0 +1,35 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.22.1"
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.1.7.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.palantir.docker"
+
+group = 'com.innovasolutions'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+docker {
+	name 'choushuhung/ds:v1'
+	dockerfile file('Dockerfile')
+	copySpec.from(tasks.bootJar.outputs.files.singleFile).into("build/libs")
+}
