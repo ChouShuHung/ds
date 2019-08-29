@@ -2,6 +2,7 @@ package com.innovasolutions.ds.controller;
 
 
 import com.innovasolutions.ds.service.security.password.IPasswordValidationService;
+import com.innovasolutions.ds.service.security.password.vo.PasswordValidationOutputVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.Set;
 
 
 @RestController
@@ -32,7 +32,7 @@ public class PasswordValidationController {
         if (StringUtils.isEmpty(password)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(WARNING_INCORRECT_CONTENT);
         } else {
-            Set<String> result = pwdValidationService.validatePassword(password);
+            PasswordValidationOutputVO result = pwdValidationService.validatePassword(password);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
     }

@@ -2,15 +2,15 @@ package com.innovasolutions.ds.service.security.rules.Impl;
 
 import com.innovasolutions.ds.service.security.rules.IValidationRules;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 import java.util.regex.Pattern;
 
-import static com.innovasolutions.ds.service.security.rules.IValidationRules.PASS_VALIDATION;
+import static com.innovasolutions.ds.service.security.rules.ValidationMessages.*;
 
 @Configuration
 public class CharacterRules implements IValidationRules {
 
-    public static final String ERROR_AT_LEAST_ONE_OF_LETTER_AND_DIGIT = "Password must consist of a mixture of lowercase letters and numerical digits only, with at least one of each.";
 
     private Pattern nonWordPattern = Pattern.compile("\\W");
     private Pattern lowerCasePattern = Pattern.compile("[a-z]");
@@ -27,10 +27,14 @@ public class CharacterRules implements IValidationRules {
      */
     @Override
     public String validate(String password) {
-        boolean minRequirement = checkLowerCaseLetter(password) && checkDigit(password);
-        boolean violationRules = checkNonWord(password) || checkUpperCaseLetter(password);
+        if (StringUtils.isEmpty(password)) {
+            return ERROR_NULL_PASSWORD;
+        } else {
+            boolean minRequirement = checkLowerCaseLetter(password) && checkDigit(password);
+            boolean violationRules = checkNonWord(password) || checkUpperCaseLetter(password);
 
-        return (!minRequirement || violationRules) ? ERROR_AT_LEAST_ONE_OF_LETTER_AND_DIGIT : PASS_VALIDATION;
+            return (!minRequirement || violationRules) ? ERROR_AT_LEAST_ONE_OF_LETTER_AND_DIGIT : PASS_VALIDATION;
+        }
     }
 
     private boolean checkNonWord(String password) {

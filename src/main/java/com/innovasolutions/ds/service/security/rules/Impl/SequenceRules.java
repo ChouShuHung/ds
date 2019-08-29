@@ -2,14 +2,15 @@ package com.innovasolutions.ds.service.security.rules.Impl;
 
 import com.innovasolutions.ds.service.security.rules.IValidationRules;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.innovasolutions.ds.service.security.rules.ValidationMessages.*;
+
 @Service("sequenceRules")
 public class SequenceRules implements IValidationRules {
-
-    public static final String ERROR_PASSWORD_REPEATING_SEQUENCE = "Password must not contain any sequence of characters immediately followed by the same sequence.";
 
     private Pattern checkSequenceRepetition = Pattern.compile("(\\w{1,}|\\W{1,})\\1");
 
@@ -21,7 +22,11 @@ public class SequenceRules implements IValidationRules {
      */
     @Override
     public String validate(String password) {
-        Matcher matcher = checkSequenceRepetition.matcher(password);
-        return (matcher.find()) ? ERROR_PASSWORD_REPEATING_SEQUENCE : PASS_VALIDATION;
+        if (StringUtils.isEmpty(password)) {
+            return ERROR_NULL_PASSWORD;
+        } else {
+            Matcher matcher = checkSequenceRepetition.matcher(password);
+            return (matcher.find()) ? ERROR_PASSWORD_REPEATING_SEQUENCE : PASS_VALIDATION;
+        }
     }
 }

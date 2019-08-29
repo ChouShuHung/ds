@@ -1,6 +1,7 @@
 package com.innovasolutions.ds.service.security.password.Impl;
 
 import com.innovasolutions.ds.service.security.password.IPasswordValidationService;
+import com.innovasolutions.ds.service.security.password.vo.PasswordValidationOutputVO;
 import com.innovasolutions.ds.service.security.rules.IValidationRules;
 import com.innovasolutions.ds.service.security.rules.Impl.CharacterRules;
 import com.innovasolutions.ds.service.security.rules.Impl.LengthRules;
@@ -11,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.innovasolutions.ds.service.security.rules.IValidationRules.PASS_VALIDATION;
+import static com.innovasolutions.ds.service.security.rules.ValidationMessages.PASS_VALIDATION;
 
 @Service("passwordValidationServiceImpl")
 public class PasswordValidationServiceImpl implements IPasswordValidationService {
@@ -27,15 +28,15 @@ public class PasswordValidationServiceImpl implements IPasswordValidationService
      * @return validation result. If password is valid, it returns "Passed". Conversely, returns the warning messages
      */
     @Override
-    public Set<String> validatePassword(String password) {
+    public PasswordValidationOutputVO validatePassword(String password) {
         Set<String> result = new HashSet<>();
         Set<IValidationRules> rules = new HashSet<>();
         rules.add(new LengthRules());
         rules.add(new CharacterRules());
         rules.add(new SequenceRules());
         rules.forEach(strategy -> result.add(strategy.validate(password)));
-        Set<String> failReason = result.stream().filter(msg -> !PASS_VALIDATION.equals(msg)).collect(Collectors.toSet());
-        return failReason.isEmpty() ? result : failReason;
+        Set<String> messages = result.stream().filter(msg -> !PASS_VALIDATION.equals(msg)).collect(Collectors.toSet());
+        return new PasswordValidationOutputVO(messages.isEmpty(), messages);
     }
 }
 

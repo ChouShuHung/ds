@@ -24,18 +24,11 @@ bin/
 *.ipr
 out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
 ### VS Code ###
 .vscode/
 
 ### Gradle ###
-gradle/
+#gradle/
 gradlew
 gradlew.bat
 settings.gradle

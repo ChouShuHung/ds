@@ -1,4 +1,4 @@
-package com.innovasolutions.ds.config.service.security.rules;
+package com.innovasolutions.ds.service.security.rules;
 
 import com.innovasolutions.ds.service.security.rules.IValidationRules;
 import org.junit.Test;
@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static com.innovasolutions.ds.service.security.rules.IValidationRules.PASS_VALIDATION;
-import static com.innovasolutions.ds.service.security.rules.Impl.LengthRules.ERROR_PASSWORD_LENGTH;
+import static com.innovasolutions.ds.service.security.rules.ValidationMessages.*;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -20,6 +19,18 @@ public class LengthRulesTests {
     @Qualifier("lengthRules")
     private IValidationRules lengthRules;
 
+
+    @Test
+    public void testNullString() {
+        // The validation should fail.
+        assertEquals(ERROR_NULL_PASSWORD, lengthRules.validate(null));
+    }
+
+    @Test
+    public void testEmptyString() {
+        // The validation should fail.
+        assertEquals(ERROR_NULL_PASSWORD, lengthRules.validate(""));
+    }
 
     @Test
     public void testLength5to12() {
@@ -39,7 +50,6 @@ public class LengthRulesTests {
         // The validation should fail. The length is less than 5;
         assertEquals(ERROR_PASSWORD_LENGTH, lengthRules.validate("1234"));
     }
-
 
     @Test
     public void testLengthGreaterThan12() {

@@ -1,4 +1,4 @@
-package com.innovasolutions.ds.config;
+package com.innovasolutions.ds;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

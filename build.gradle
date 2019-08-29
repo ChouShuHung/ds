@@ -1,35 +1,43 @@
-buildscript {
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.22.1"
-	}
-}
-
 plugins {
-	id 'org.springframework.boot' version '2.1.7.RELEASE'
-	id 'java'
+    id 'java'
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id "com.palantir.docker" version "0.22.1"
+    id "com.github.rodm.teamcity-server" version "1.2.2"
 }
 
 apply plugin: 'io.spring.dependency-management'
-apply plugin: "com.palantir.docker"
 
 group = 'com.innovasolutions'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
-	mavenCentral()
+	jcenter()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
 }
 
 docker {
-	name 'choushuhung/ds:v1'
-	dockerfile file('Dockerfile')
-	copySpec.from(tasks.bootJar.outputs.files.singleFile).into("build/libs")
+    name 'choushuhung/ds:v1'
+    dockerfile file('Dockerfile')
+    copySpec.from(tasks.bootJar.outputs.files.singleFile).into("build/libs")
+}
+
+teamcity {
+    version = '10.0'
+
+    server {
+        descriptor {
+            name = project.name
+            displayName = 'Demo Plugin'
+            version = project.version
+            vendorName = 'Demo Vendor'
+            description = 'Demo plugin description'
+            useSeparateClassloader = false
+        }
+    }
 }

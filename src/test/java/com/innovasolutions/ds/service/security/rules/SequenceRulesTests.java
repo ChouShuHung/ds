@@ -1,6 +1,7 @@
-package com.innovasolutions.ds.config.service.security.rules;
+package com.innovasolutions.ds.service.security.rules;
 
 import com.innovasolutions.ds.service.security.rules.IValidationRules;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static com.innovasolutions.ds.service.security.rules.IValidationRules.PASS_VALIDATION;
-import static com.innovasolutions.ds.service.security.rules.Impl.SequenceRules.ERROR_PASSWORD_REPEATING_SEQUENCE;
+import static com.innovasolutions.ds.service.security.rules.ValidationMessages.*;
 import static junit.framework.TestCase.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -55,5 +55,11 @@ public class SequenceRulesTests {
     public void testSeparateDuplicatedDigits() {
         // The validation should pass.
         assertEquals(PASS_VALIDATION, sequenceRules.validate("123abc123"));
+    }
+
+    @Test
+    public void testNullString() {
+        // The validation should fail.
+        Assert.assertEquals(ERROR_NULL_PASSWORD, sequenceRules.validate(null));
     }
 }

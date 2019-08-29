@@ -1,5 +1,7 @@
 package com.innovasolutions.ds.service.security.password;
 
+import com.innovasolutions.ds.service.security.password.vo.PasswordValidationOutputVO;
+
 import java.util.Set;
 
 /**
@@ -14,6 +16,6 @@ public interface IPasswordValidationService {
      * @param password password
      * @return validation result. If password is valid, it returns "Passed". Conversely, returns the warning messages
      */
-    Set<String> validatePassword(String password);
+    PasswordValidationOutputVO validatePassword(String password);
 
 }
