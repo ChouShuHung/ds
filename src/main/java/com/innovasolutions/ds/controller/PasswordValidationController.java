@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 public class PasswordValidationController {
-    private static final String WARNING_INCORRECT_CONTENT = "Please enter the correct key \"password\" and value";
+    public static final String WARNING_INCORRECT_CONTENT = "Please enter the correct key \"password\" and value";
 
     @Autowired
     IPasswordValidationService pwdValidationService;

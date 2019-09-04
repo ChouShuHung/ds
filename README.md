@@ -59,6 +59,9 @@ This application was tested on the following:
 
 - Check the visualize at:
 	 - http://127.0.0.1:5000/
+	 
+- Verify that Restful API endpoint is accessible
+     - $ curl http://localhost:4000/validatePassword
 
 ## Reference
 

@@ -2,17 +2,11 @@ package com.innovasolutions.ds.service.security.password.Impl;
 
 import com.innovasolutions.ds.service.security.password.IPasswordValidationService;
 import com.innovasolutions.ds.service.security.password.vo.PasswordValidationOutputVO;
-import com.innovasolutions.ds.service.security.rules.IValidationRules;
+import com.innovasolutions.ds.service.security.rules.CompositePasswordValidationRules;
 import com.innovasolutions.ds.service.security.rules.Impl.CharacterRules;
 import com.innovasolutions.ds.service.security.rules.Impl.LengthRules;
 import com.innovasolutions.ds.service.security.rules.Impl.SequenceRules;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.innovasolutions.ds.service.security.rules.ValidationMessages.PASS_VALIDATION;
 
 @Service("passwordValidationServiceImpl")
 public class PasswordValidationServiceImpl implements IPasswordValidationService {
@@ -29,14 +23,12 @@ public class PasswordValidationServiceImpl implements IPasswordValidationService
      */
     @Override
     public PasswordValidationOutputVO validatePassword(String password) {
-        Set<String> result = new HashSet<>();
-        Set<IValidationRules> rules = new HashSet<>();
-        rules.add(new LengthRules());
-        rules.add(new CharacterRules());
-        rules.add(new SequenceRules());
-        rules.forEach(strategy -> result.add(strategy.validate(password)));
-        Set<String> messages = result.stream().filter(msg -> !PASS_VALIDATION.equals(msg)).collect(Collectors.toSet());
-        return new PasswordValidationOutputVO(messages.isEmpty(), messages);
+        CompositePasswordValidationRules rules = new CompositePasswordValidationRules();
+        rules.addRules(new LengthRules());
+        rules.addRules(new CharacterRules());
+        rules.addRules(new SequenceRules());
+        rules.validate(password);
+        return new PasswordValidationOutputVO(rules.getResult());
     }
 }
 

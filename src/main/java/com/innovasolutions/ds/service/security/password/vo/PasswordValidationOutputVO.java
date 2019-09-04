@@ -4,11 +4,11 @@ import java.util.Set;
 
 public class PasswordValidationOutputVO {
     private boolean isPasswordValid;
-    private  Set<String> messages;
+    private Set<String> messages;
 
-    public PasswordValidationOutputVO(boolean isPasswordValid, Set<String> messages) {
-        this.isPasswordValid = isPasswordValid;
-        this.messages = messages;
+    public PasswordValidationOutputVO(Set<String> result) {
+        this.isPasswordValid = null != result && result.isEmpty();
+        this.messages = result;
     }
 
     public boolean isPasswordValid() {

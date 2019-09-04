@@ -1,6 +1,5 @@
 package com.innovasolutions.ds.service.security.rules;
 
-import com.innovasolutions.ds.service.security.rules.IValidationRules;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
